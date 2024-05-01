@@ -7,7 +7,7 @@
 I wanted to use Laravel or Headless CMS, but i dont think the time is enough for me to implement it. So i decided to
 leverage local storage for this project.
 
-Also i have problem with Vuex, so i decided to use Pinia for this project, since almost the same with Vuex.
+**Also i have problem with Vuex, so i decided to use Pinia for this project, since almost the same with Vuex.**
 
 All logic are separated, i put all the logic in pinia store, and the components are just for rendering and fetching data
 from store.
