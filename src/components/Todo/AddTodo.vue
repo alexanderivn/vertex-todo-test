@@ -1,5 +1,6 @@
 <template>
-  <section class="flex flex-col gap-y-4 bg-pastel-purple p-8 rounded-2xl w-full ring-2 ring-neutral-950">
+  <form class="flex flex-col gap-y-4 bg-pastel-purple p-8 rounded-2xl w-full ring-2 ring-neutral-950"
+        @submit.prevent="addNewTodo">
     <section class="flex justify-between items-center mb-8">
       <section class="">
         <h1 class="font-black text-5xl">Hello, Ivan</h1>
@@ -15,20 +16,19 @@
     <span class="text-lg text-red-500">{{ requiredMessage }}</span>
     <input v-model="dueDate" :min="currentDate" class="px-2 py-2 rounded-lg w-full text-2xl ring-2 ring-neutral-950"
            max="2030-12-31" placeholder="dd-mm-yyyy" type="date">
-    <button class="bg-pastel-yellow p-2 rounded-lg w-full text-2xl ring-2 ring-neutral-950" @click="addNewTodo">Add
-      Task
+    <button class="bg-pastel-yellow p-2 rounded-lg w-full text-2xl ring-2 ring-neutral-950">Add
+      Todo
     </button>
-  </section>
+  </form>
 </template>
 
 <script lang="ts" setup>
-
 import {currentDate} from "@/utils/dateUtils";
 import TodoCharacter from "@/components/illustrations/TodoCharacter.vue";
 import {ref} from "vue";
 import {generateRandomId} from "@/utils/randomIdGenerator";
 import moment from "moment/moment";
-import type {Task} from "@/types/Task";
+import type {Todo} from "@/types/Todo";
 
 // reactive variables to store the new todo and due date, then we pass it to the addNewTodo function
 const newTodo = ref('')
@@ -38,16 +38,14 @@ const dueDate = ref('')
 const requiredMessage = ref('')
 
 const props = defineProps<{
-  tasks: Task[]
-  addTodo: (task: Task) => void
+  todos: Todo[]
+  addTodo: (task: Todo) => void
 }>()
 
 // push todo items to the store, by calling the store addTodo function
 const addNewTodo = () => {
 // simple validation, if the newTodo value is empty, then we show the required message
-  if (!newTodo.value || newTodo.value.length <= 0) {
-    requiredMessage.value = 'Please fill the task field'
-  } else {
+  if (newTodo.value) {
     props.addTodo({
       id: generateRandomId(), // using random id generator in utils to generate unique id for each todo,
       title: newTodo.value,

@@ -1,53 +1,53 @@
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
-import type { Task } from "@/types/Task";
+import type { Todo } from "@/types/Todo";
 import moment from "moment";
 
 export const useTodoStore = defineStore('todo', () => {
-  const tasks = ref<Task[]>([]);
+  const todos = ref<Todo[]>([]);
   try {
-    tasks.value = JSON.parse(localStorage.getItem('tasks') as string) || [];
+    todos.value = JSON.parse(localStorage.getItem('todos') as string) || [];
   } catch (error) {
     console.error('Failed to parse Todo from localStorage:', error);
   }
 
-  function addTodo(task: Task) {
-    tasks.value.push(task);
-    tasks.value.sort((a, b) => new Date(b.created_at ?? "").getTime() - new Date(a.created_at ?? "").getTime());
-    localStorage.setItem('tasks', JSON.stringify(tasks.value));
+  function addTodo(todo: Todo) {
+    todos.value.push(todo);
+    todos.value.sort((a, b) => new Date(b.created_at ?? "").getTime() - new Date(a.created_at ?? "").getTime());
+    localStorage.setItem('todos', JSON.stringify(todos.value));
   }
 
-  function editTodo(task: Task) {
-    task.is_editing = !task.is_editing;
-    watch(tasks, (newVal: any) => {
-      localStorage.setItem('tasks', newVal)
+  function editTodo(todo: Todo) {
+    todo.is_editing = !todo.is_editing;
+    watch(todos, (newVal: any) => {
+      localStorage.setItem('todos', newVal)
     })
 
-    watch(tasks, (newVal) => {
-      localStorage.setItem('tasks', JSON.stringify(newVal))
+    watch(todos, (newVal) => {
+      localStorage.setItem('todos', JSON.stringify(newVal))
     }, {
       deep: true
     })
   }
 
-  const updateTodo = (task: Task) => {
-    task.is_editing = false;
+  const updateTodo = (todo: Todo) => {
+    todo.is_editing = false;
   }
 
-  function deleteTodo(task: Task) {
-    const index = tasks.value.indexOf(task);
-    tasks.value.splice(index, 1);
-    localStorage.setItem('tasks', JSON.stringify(tasks.value));
+  function deleteTodo(todo: Todo) {
+    const index = todos.value.indexOf(todo);
+    todos.value.splice(index, 1);
+    localStorage.setItem('todos', JSON.stringify(todos.value));
   }
 
-  function markAsComplete(task: Task) {
-    task.is_completed = !task.is_completed;
-    task.completed_at = task.is_completed ? moment().format('DD-MMM-YYYY') : '';
-    localStorage.setItem('tasks', JSON.stringify(tasks.value));
+  function markAsComplete(todo: Todo) {
+    todo.is_completed = !todo.is_completed;
+    todo.completed_at = todo.is_completed ? moment().format('DD-MMM-YYYY') : '';
+    localStorage.setItem('todos', JSON.stringify(todos.value));
   }
 
   return {
-    tasks,
+    todos,
     updateTodo,
     addTodo,
     editTodo,
