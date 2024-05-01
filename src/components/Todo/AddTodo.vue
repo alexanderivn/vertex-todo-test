@@ -12,9 +12,17 @@
     </section>
 
     <input v-model="newTodo" class="py-2 pl-2 rounded-lg w-full text-2xl ring-2 ring-neutral-950"
-           placeholder="Cook chicken soup for dinner" required type="text" @keyup.enter="addNewTodo">
-    <input v-model="dueDate" :min="currentDate" class="px-2 py-2 rounded-lg w-full text-2xl ring-2 ring-neutral-950"
-           max="2030-12-31" placeholder="dd-mm-yyyy" type="date">
+           placeholder="Cook chicken soup for dinner"
+           required type="text"
+           @keyup.enter="addNewTodo">
+    <input v-model="dueDate"
+           :min="currentDate"
+           class="px-2 py-2 rounded-lg w-full text-2xl ring-2 ring-neutral-950"
+           max="2030-12-31"
+           onblur="(this.type='text')"
+           onfocus="(this.type='date')"
+           placeholder="set due date"
+           type="text">
     <button class="bg-pastel-yellow p-2 rounded-lg w-full text-2xl ring-2 ring-neutral-950">Add
       Todo
     </button>

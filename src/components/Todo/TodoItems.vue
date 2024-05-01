@@ -13,7 +13,11 @@
                    @keyup.enter="editTodo(todo)"
                    @keyup.esc="editTodo(todo)">
             <input v-model="todo.due_date" class="px-2 py-2 rounded-lg w-full text-2xl ring-2 ring-neutral-950"
-                   type="date">
+                   max="2030-12-31"
+                   onblur="(this.type='text')"
+                   onfocus="(this.type='date')"
+                   placeholder="set due date"
+                   type="text">
             <button class="bg-pastel-pink mt-4 p-2 rounded-lg w-full text-2xl ring-2 ring-neutral-950"
                     @click="updateTodo(todo)">Done
             </button>
